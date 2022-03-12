@@ -1,0 +1,10 @@
+[
+    {"Appointment_ID": 1, "Doctor_ID": 2, "Patient_ID": 3, "Device_ID": 1, 
+        "Device_Output": "37", "Date": "Wed Mar  9 17:46:24 2022", "Alert": "False"},
+
+    {"Appointment_ID": 2, "Doctor_ID": 2, "Patient_ID": 3, "Device_ID": 1, 
+        "Device_Output": "40", "Date": "Wed Mar  9 17:46:24 2022", "Alert": "True"},
+
+    {"Appointment_ID": 3, "Doctor_ID": 2, "Patient_ID": 3, "Device_ID": 1, 
+        "Device_Output": "", "Date": "Wed Mar  9 17:46:24 2022", "Alert": ""}
+]

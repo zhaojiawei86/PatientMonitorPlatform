@@ -1,0 +1,8 @@
+[
+  {"Device_ID": 1, "Device_Name": "temperature"},
+  {"Device_ID": 2, "Device_Name": "blood pressure"},
+  {"Device_ID": 3, "Device_Name": "pulse"},
+  {"Device_ID": 4, "Device_Name": "oximeter"},
+  {"Device_ID": 5, "Device_Name": "weight"},
+  {"Device_ID": 6, "Device_Name": "glucometer"}
+]
