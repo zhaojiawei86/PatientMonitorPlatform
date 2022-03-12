@@ -32,6 +32,7 @@ def create_db(table_path, command):
 if __name__ == '__main__':
     create_db("../tables/devices.json", "INSERT INTO devices VALUES(?, ?)")
     create_db("../tables/users.json", "INSERT INTO users VALUES(?, ?, ?)")
+    # Role_ID: 0=admin 1=developer 2=doctor 3=patient 4=other MP
     create_db("../tables/appointments.json",
               "INSERT INTO appointments VALUES(?, ?, ?, ?, ?, ?, ?)")
 
