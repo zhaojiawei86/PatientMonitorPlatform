@@ -35,7 +35,8 @@ if __name__ == '__main__':
     # Role_ID: 0=admin 1=developer 2=doctor 3=patient 4=other MP
     create_db("../tables/appointments.json",
               "INSERT INTO appointments VALUES(?, ?, ?, ?, ?, ?, ?)")
-
+    create_db("../tables/chats.json",
+              "INSERT INTO chats VALUES(?, ?, ?, ?, ?)")
     # localtime = time.asctime(time.localtime(time.time()))
     # print("本地时间为 :", localtime)
     # print(type(localtime))
