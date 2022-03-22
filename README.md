@@ -29,7 +29,7 @@ db.sqlite3
 ```
 
 3. tables file  
-   tables used to create original database, all tables saves in json version
+   tables used to create original database, all tables saved in json version
 
 ```
 appointments.json
@@ -38,7 +38,7 @@ devices.json
 users.json
 ```
 
-4. chat_record file
+4. chat_record file  
    default chat record used to test chats module  
    including text and audio files
 
