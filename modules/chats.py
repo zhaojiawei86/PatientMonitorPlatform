@@ -67,8 +67,7 @@ def single_chat(chat_id):
                     chat = row[3]
                     if chat.split('.')[1] == "txt":
                         return jsonify(print_text(chat)), 200
-                    else:
-                        return jsonify(speech_to_text(chat)), 200
+                    return jsonify(speech_to_text(chat)), 200
                 else:
                     return f"Cannot find chat {chat_id}", 404
 

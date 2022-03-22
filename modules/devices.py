@@ -100,8 +100,7 @@ def single_apt(apt_id):
                 apt = row
             if apt is not None:
                 return jsonify(apt), 200
-            else:
-                return f"Cannot find appointment {apt_id}", 404
+            return f"Cannot find appointment {apt_id}", 404
 
         if request.method == 'PUT':
             sql = """UPDATE appointments
