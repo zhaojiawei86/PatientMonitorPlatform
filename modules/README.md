@@ -12,7 +12,8 @@ URL: http://127.0.0.1:5000/devices
    <img width="371" alt="image" src="https://user-images.githubusercontent.com/59852184/159432155-f840cbc0-229d-4f61-bec1-ebf03a051de4.png">
 2. POST devices  
    new device has been added  
-   <img width="506" alt="image" src="https://user-images.githubusercontent.com/59852184/159432344-53115360-c3be-4e54-96b2-65be30840b46.png"><img width="392" alt="image" src="https://user-images.githubusercontent.com/59852184/159432398-b0418574-ff5b-45f8-a2a9-8b03d8d42fbb.png">
+   <img width="506" alt="image" src="https://user-images.githubusercontent.com/59852184/159432344-53115360-c3be-4e54-96b2-65be30840b46.png">  
+   <img width="392" alt="image" src="https://user-images.githubusercontent.com/59852184/159432398-b0418574-ff5b-45f8-a2a9-8b03d8d42fbb.png">
 
 URL: http://127.0.0.1:5000/device/\<device_id>
 
@@ -42,7 +43,7 @@ URL: http://127.0.0.1:5000/chats
 
 URL: http://127.0.0.1:5000/chat/\<chat_id>
 
-2. GET content for chat
+2. GET content for chat  
    chat with id=1 is an audio file, convert audio to text.  
    <img width="438" alt="image" src="https://user-images.githubusercontent.com/59852184/159434771-cf547573-72c2-4be9-af8e-82315935d982.png">
 
