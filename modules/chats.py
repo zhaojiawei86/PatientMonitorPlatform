@@ -50,6 +50,7 @@ def chats():
             ]
             if chats_list is not None:
                 return jsonify(chats_list), 200
+    return None
 
 
 @app.route('/chat/<int:chat_id>', methods=['GET'])
@@ -68,8 +69,8 @@ def single_chat(chat_id):
                     if chat.split('.')[1] == "txt":
                         return jsonify(print_text(chat)), 200
                     return jsonify(speech_to_text(chat)), 200
-                else:
-                    return f"Cannot find chat {chat_id}", 404
+                return f"Cannot find chat {chat_id}", 404
+    return None
 
 
 if __name__ == "__main__":
