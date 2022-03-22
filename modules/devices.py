@@ -29,6 +29,7 @@ def devices():
             cursor = conn.execute(sql, (new_device,))
             conn.commit()
             return f"Device with the id {cursor.lastrowid} created successfully.", 201
+    return None
 
 
 @app.route('/device/<int:device_id>', methods=['GET', 'PUT', 'DELETE'])
@@ -45,8 +46,7 @@ def single_device(device_id):
                 device = row
             if device is not None:
                 return jsonify(device), 200
-            else:
-                return f"Cannot find device {device_id}", 404
+            return f"Cannot find device {device_id}", 404
 
         if request.method == 'PUT':
             sql = """UPDATE devices
@@ -69,6 +69,7 @@ def single_device(device_id):
             conn.execute(sql, (device_id,))
             conn.commit()
             return f"The device with id {device_id} has been deleted.", 200
+    return None
 
 
 @app.route('/appointments', methods=['GET'])
@@ -84,6 +85,7 @@ def appointments():
             ]
             if appointments_list is not None:
                 return jsonify(appointments_list)
+    return None
 
 
 @app.route('/appointment/<int:apt_id>', methods=['GET', 'PUT'])
@@ -114,6 +116,7 @@ def single_apt(apt_id):
             conn.execute(sql, (device_id, apt_id,))
             conn.commit()
             return jsonify(updated_apt)
+    return None
 
 
 if __name__ == "__main__":
