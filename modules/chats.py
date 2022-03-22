@@ -49,7 +49,7 @@ def chats():
                 for row in cursor.fetchall()
             ]
             if chats_list is not None:
-                return jsonify(chats_list)
+                return jsonify(chats_list), 200
 
 
 @app.route('/chat/<int:chat_id>', methods=['GET'])

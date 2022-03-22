@@ -59,7 +59,7 @@ def single_device(device_id):
             }
             conn.execute(sql, (device_name, device_id,))
             conn.commit()
-            return jsonify(updated_device)
+            return jsonify(updated_device), 204
 
         if request.method == 'DELETE':
             if device_id in range(1, 7):
