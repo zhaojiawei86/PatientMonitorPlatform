@@ -18,7 +18,7 @@ test_devices.py
 test_chats.py
 ```
 
-2. database file
+2. database file  
    create default database used to implement a simulation to send data via an example program
    databases saved in sqlite  
    ![IMG_C6662C539033-1](https://user-images.githubusercontent.com/59852184/159430608-530c1bc9-1216-4b93-87c9-4be581757740.jpeg)
@@ -28,7 +28,7 @@ default_db.py
 db.sqlite3
 ```
 
-3. tables file
+3. tables file  
    tables used to create original database, all tables saves in json version
 
 ```
