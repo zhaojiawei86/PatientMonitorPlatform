@@ -1,5 +1,5 @@
 [
-  {"Chat_ID": 1, "Doctor_ID": 2, "Patient_ID": 3, "Chat_Content": "Test chat content", "Date": "Test chat date"},
-  {"Chat_ID": 2, "Doctor_ID": 2, "Patient_ID": 3, "Chat_Content": "Hello", "Date": "Wed Mar 16 13:18:35 2022"}
+  {"Chat_ID": 1, "Doctor_ID": 2, "Patient_ID": 3, "Chat_Content": "chat_record_test.wav", "Date": "Test chat date"},
+  {"Chat_ID": 2, "Doctor_ID": 2, "Patient_ID": 3, "Chat_Content": "chat_record_test.txt", "Date": "Wed Mar 16 13:18:35 2022"}
 
 ]

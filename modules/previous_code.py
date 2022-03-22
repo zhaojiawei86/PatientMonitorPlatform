@@ -1,4 +1,6 @@
 ''' devices.py'''
+from flask import Flask, request, jsonify
+import speech_recognition as sr
 import sqlite3
 
 
@@ -100,3 +102,21 @@ if __name__ == "__main__":
     assign_device(3, 7)
     assign_device(4, 2)
     print(read_sqlite("appointments"))
+
+
+# chats
+
+recognizer = sr.Recognizer()
+path = '../chat_record/chat_record_test.wav'
+with sr.AudioFile(path) as source:
+
+    audio_text = recognizer.listen(source)
+
+    try:
+        # using google speech recognition
+        text = recognizer.recognize_google(audio_text)
+        print('Converting audio transcripts into text ...')
+        print(text)
+
+    except sr.UnknownValueError():
+        print('Sorry.. run again...')
