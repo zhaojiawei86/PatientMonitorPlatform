@@ -19,7 +19,7 @@ test_chats.py
 ```
 
 2. database file  
-   create default database used to implement a simulation to send data via an example program
+   create default database used to implement a simulation to send data via an example program  
    databases saved in sqlite  
    ![IMG_C6662C539033-1](https://user-images.githubusercontent.com/59852184/159430608-530c1bc9-1216-4b93-87c9-4be581757740.jpeg)
 
