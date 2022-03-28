@@ -4,7 +4,6 @@ from home import home
 from devices import devices
 from chats import chats
 
-
 app = Flask(__name__)
 
 app.register_blueprint(home)

@@ -41,8 +41,8 @@ def single_chat(chat_id):
                 if row is not None:
                     chat = row[3]
                     if chat.split('.')[1] == "txt":
-                        return jsonify(print_text(chat)), 200
-                    return jsonify(speech_to_text(chat)), 200
+                        return print_text(chat), 200
+                    return speech_to_text(chat), 200
                 return f"Cannot find chat {chat_id}", 404
     return None
 
@@ -52,7 +52,7 @@ def print_text(chat_address):
     path = '../chat_record/' + chat_address
     with open(path, encoding="utf-8") as file:
         contents = list(file.readlines())
-        return contents
+        return jsonify(contents)
 
 
 def speech_to_text(chat_address):
@@ -67,7 +67,7 @@ def speech_to_text(chat_address):
             # using google speech recognition
             text = ["Converting audio transcripts into text ..."]
             text += [recognizer.recognize_google(audio_text)]
-            return text
+            return jsonify(text)
 
         except sr.UnknownValueError():
             return 'Sorry.. run again...'
