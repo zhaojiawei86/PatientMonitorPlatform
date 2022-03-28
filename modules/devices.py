@@ -5,13 +5,16 @@ assign device and get measure result
 '''
 
 import sqlite3
-from flask import Flask, request, jsonify
+from flask import request, jsonify, Blueprint
 
-app = Flask(__name__)
+devices = Blueprint("devices", __name__)
+# devices = Flask(__name__)
+
+# app = Flask(__name__)
 
 
-@app.route('/devices', methods=['GET', 'POST'])
-def devices():
+@devices.route('/devices', methods=['GET', 'POST'])
+def all_devices():
     '''get / post device'''
     with sqlite3.connect("../database/db.sqlite3") as conn:
         if request.method == 'GET':
@@ -32,7 +35,7 @@ def devices():
     return None
 
 
-@app.route('/device/<int:device_id>', methods=['GET', 'PUT', 'DELETE'])
+@devices.route('/device/<int:device_id>', methods=['GET', 'PUT', 'DELETE'])
 def single_device(device_id):
     '''get/ change/ delete device'''
     with sqlite3.connect("../database/db.sqlite3") as conn:
@@ -72,7 +75,7 @@ def single_device(device_id):
     return None
 
 
-@app.route('/appointments', methods=['GET'])
+@devices.route('/appointments', methods=['GET'])
 def appointments():
     '''get appointments'''
     with sqlite3.connect("../database/db.sqlite3") as conn:
@@ -88,7 +91,7 @@ def appointments():
     return None
 
 
-@app.route('/appointment/<int:apt_id>', methods=['GET', 'PUT'])
+@devices.route('/appointment/<int:apt_id>', methods=['GET', 'PUT'])
 def single_apt(apt_id):
     '''get/ change/ delete device'''
     with sqlite3.connect("../database/db.sqlite3") as conn:
@@ -119,5 +122,5 @@ def single_apt(apt_id):
     return None
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     devices.run(debug=True)
