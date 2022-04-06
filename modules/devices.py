@@ -7,16 +7,20 @@ assign device and get measure result
 import sqlite3
 from flask import request, jsonify, Blueprint
 
+from modules import DB_ADDRESS
+
 devices = Blueprint("devices", __name__)
 # devices = Flask(__name__)
 
 # app = Flask(__name__)
+PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
+DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 
 
 @devices.route('/devices', methods=['GET', 'POST'])
 def all_devices():
     '''get / post device'''
-    with sqlite3.connect("../database/db.sqlite3") as conn:
+    with sqlite3.connect(DB_ADDRESS) as conn:
         if request.method == 'GET':
             cursor = conn.execute("SELECT * FROM devices")
             devices_list = [
@@ -38,7 +42,7 @@ def all_devices():
 @devices.route('/device/<int:device_id>', methods=['GET', 'PUT', 'DELETE'])
 def single_device(device_id):
     '''get/ change/ delete device'''
-    with sqlite3.connect("../database/db.sqlite3") as conn:
+    with sqlite3.connect(DB_ADDRESS) as conn:
         cursor = conn.cursor()
         device = None
         if request.method == 'GET':
@@ -78,7 +82,7 @@ def single_device(device_id):
 @devices.route('/appointments', methods=['GET'])
 def appointments():
     '''get appointments'''
-    with sqlite3.connect("../database/db.sqlite3") as conn:
+    with sqlite3.connect(DB_ADDRESS) as conn:
         if request.method == 'GET':
             cursor = conn.execute("SELECT * FROM appointments")
             appointments_list = [
@@ -94,7 +98,7 @@ def appointments():
 @devices.route('/appointment/<int:apt_id>', methods=['GET', 'PUT'])
 def single_apt(apt_id):
     '''get/ change/ delete device'''
-    with sqlite3.connect("../database/db.sqlite3") as conn:
+    with sqlite3.connect(DB_ADDRESS) as conn:
         cursor = conn.cursor()
         apt = None
         if request.method == 'GET':
