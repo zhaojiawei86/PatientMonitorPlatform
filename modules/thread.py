@@ -1,15 +1,14 @@
-from flask import Flask
-from time import sleep
+'''multiprocessing'''
 from concurrent.futures import ThreadPoolExecutor
-
-# DOCS https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
-# executor = ThreadPoolExecutor(10)
+from time import sleep
+from flask import Flask
 
 app = Flask(__name__)
 
 
 @app.route('/jobs')
 def run_jobs():
+    '''multy jobs'''
     with ThreadPoolExecutor(max_workers=10) as executor:
         future = executor.submit(some_long_task1)
         print(future.result())
@@ -24,6 +23,7 @@ def run_jobs():
 
 
 def some_long_task1():
+    '''task 1'''
     print("Task #1 started!")
     sleep(2)
     print("Task #1 is done!")
@@ -31,6 +31,7 @@ def some_long_task1():
 
 
 def some_long_task2(arg1, arg2):
+    '''task 2'''
     print("Task #2 started with args: %s %s!" % (arg1, arg2))
     sleep(2)
     print("Task #2 is done!")
