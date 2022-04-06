@@ -6,7 +6,6 @@ from modules.chats import chats
 
 
 app = Flask(__name__)
-
 app.register_blueprint(home)
 app.register_blueprint(devices)
 app.register_blueprint(chats)

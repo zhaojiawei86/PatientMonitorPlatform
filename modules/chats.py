@@ -7,7 +7,9 @@ import sqlite3
 import speech_recognition as sr
 from flask import request, jsonify, Blueprint
 
+
 chats = Blueprint("chats", __name__)
+
 # chats = Flask(__name__)
 PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
 DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
@@ -33,8 +35,14 @@ def all_chats():
 @chats.route('/chat/<int:chat_id>', methods=['GET'])
 def single_chat(chat_id):
     '''get single chat'''
-    if request.method == 'GET':
-        chat_address = get_chat_address(chat_id)
+    return get_single_chat(chat_id)
+
+
+def get_single_chat(chat_id):
+    '''get single chat'''
+
+    chat_address = get_chat_address(chat_id)
+    if (chat_address):
         if chat_address.split('.')[1] == "txt":
             return print_text(chat_address), 200
         return speech_to_text(chat_address), 200
