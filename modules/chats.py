@@ -3,7 +3,9 @@ chats module:
 get chat content
 speech to text
 '''
+from concurrent.futures import ThreadPoolExecutor
 import sqlite3
+import time
 import speech_recognition as sr
 from flask import request, jsonify, Blueprint
 
@@ -14,6 +16,20 @@ chats = Blueprint("chats", __name__)
 PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
 DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 CHAT_ADDRESS = PROJ_ADDRESS + "/chat_record/"
+
+
+@chats.route('/thread-chats/<int:chat_id>')
+def run_jobs(chat_id):
+    '''multy jobs'''
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        executor.submit(get_single_chat, chat_id)
+
+        # future = executor.submit(some_long_task1)
+        # print(future.result())
+        # future2 = executor.submit(some_long_task2, 'hello', 123)
+        # print(future2.result())
+
+    return 'Jobs were launched in background!'
 
 
 @chats.route('/chats', methods=['GET'])
@@ -40,12 +56,18 @@ def single_chat(chat_id):
 
 def get_single_chat(chat_id):
     '''get single chat'''
+    print(f"# Task {chat_id} begin.")
+    time.sleep(5)
 
     chat_address = get_chat_address(chat_id)
+
     if (chat_address):
         if chat_address.split('.')[1] == "txt":
-            return print_text(chat_address), 200
-        return speech_to_text(chat_address), 200
+            text = print_text(chat_address)
+            return text, 200
+        text = speech_to_text(chat_address)
+        print(f"# Task {chat_id} done.")
+        return text, 200
     return f"Cannot find chat {chat_id}", 404
 
 
@@ -68,6 +90,7 @@ def print_text(chat_address):
     path = CHAT_ADDRESS + chat_address
     with open(path, encoding="utf-8") as file:
         contents = list(file.readlines())
+        print("# Task done.")
         return jsonify(contents)
 
 
@@ -83,6 +106,7 @@ def speech_to_text(chat_address):
             # using google speech recognition
             text = ["Converting audio transcripts into text ..."]
             text += [recognizer.recognize_google(audio_text)]
+            print("# Task done.")
             return jsonify(text)
 
         except sr.UnknownValueError():

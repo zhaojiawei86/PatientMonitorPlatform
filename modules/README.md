@@ -54,3 +54,32 @@ URL: http://127.0.0.1:5000/chat/\<chat_id>
 
 test all responses for chats module, check whether if all responses have code 200  
 <img width="529" alt="image" src="https://user-images.githubusercontent.com/59852184/159435045-28b10424-0290-4e64-b69f-e48062761c9d.png">
+
+## threads
+
+Single chat detail could be asked for in threads, which help users GET at the same time.
+We reload page for the following order:
+
+```
+chat 1
+chat 2
+chat 1
+chat 1
+```
+
+And we get the thread information in background:
+
+```
+# Task 1 begin.
+# Task 2 begin.
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:50] "GET /thread-chats/1 HTTP/1.1" 200 -
+# Task 1 begin.
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:52] "GET /thread-chats/2 HTTP/1.1" 200 -
+# Task 1 begin.
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:56] "GET /thread-chats/1 HTTP/1.1" 200 -
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:59] "GET /thread-chats/1 HTTP/1.1" 200 -
+```
