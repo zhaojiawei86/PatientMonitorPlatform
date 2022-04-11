@@ -2,7 +2,7 @@
 from flask import Flask
 from modules.home import home
 from modules.devices import devices
-from modules.chats import chats
+from modules.speech_to_text import chats
 
 
 app = Flask(__name__)
