@@ -10,7 +10,7 @@ import speech_recognition as sr
 from flask import request, jsonify, Blueprint
 
 
-chats = Blueprint("chats", __name__)
+S2T = Blueprint("chats", __name__)
 
 # chats = Flask(__name__)
 PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
@@ -18,7 +18,7 @@ DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 CHAT_ADDRESS = PROJ_ADDRESS + "/chat_record/"
 
 
-@chats.route('/thread-chats/<int:chat_id>')
+@S2T.route('/thread-chats/<int:chat_id>')
 def run_jobs(chat_id):
     '''multy jobs'''
     with ThreadPoolExecutor(max_workers=10) as executor:
@@ -32,7 +32,7 @@ def run_jobs(chat_id):
     return 'Jobs were launched in background!'
 
 
-@chats.route('/chats', methods=['GET'])
+@S2T.route('/chats', methods=['GET'])
 def all_chats():
     '''get all chat content'''
     with sqlite3.connect(DB_ADDRESS) as conn:
@@ -48,7 +48,7 @@ def all_chats():
     return None
 
 
-@chats.route('/chat/<int:chat_id>', methods=['GET'])
+@S2T.route('/chat/<int:chat_id>', methods=['GET'])
 def single_chat(chat_id):
     '''get single chat'''
     return get_single_chat(chat_id)
@@ -61,7 +61,7 @@ def get_single_chat(chat_id):
 
     chat_address = get_chat_address(chat_id)
 
-    if (chat_address):
+    if chat_address:
         if chat_address.split('.')[1] == "txt":
             text = print_text(chat_address)
             return text, 200
