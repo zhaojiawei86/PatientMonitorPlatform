@@ -2,13 +2,13 @@
 from flask import Flask
 from modules.home import home
 from modules.devices import devices
-from modules.chats import chats
+from modules.speech_to_text import S2T
 
 
 app = Flask(__name__)
 app.register_blueprint(home)
 app.register_blueprint(devices)
-app.register_blueprint(chats)
+app.register_blueprint(S2T)
 
 
 if __name__ == "__main__":
