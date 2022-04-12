@@ -3,7 +3,8 @@
 Jiawei Zhao  
 Project for EC530 22Spring.
 
-Platform to monitor patients, which could enable people to check medical measurements, make appointments and chat.  
+Platform to monitor patients, which could enable people to check medical measurements, make appointments and chat.
+
 <img width="1001" alt="image" src="https://user-images.githubusercontent.com/59852184/162890520-dceb5bba-fe8c-4cf0-b491-dad9a6d44c35.png">
 
 ![IMG_C6662C539033-1](https://user-images.githubusercontent.com/59852184/159430608-530c1bc9-1216-4b93-87c9-4be581757740.jpeg)
