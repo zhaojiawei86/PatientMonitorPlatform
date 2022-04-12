@@ -5,9 +5,9 @@ speech to text
 '''
 from concurrent.futures import ThreadPoolExecutor
 import sqlite3
-import time
+# import time
 import speech_recognition as sr
-from flask import request, jsonify, Blueprint
+from flask import abort, request, jsonify, Blueprint, render_template
 
 
 S2T = Blueprint("chats", __name__)
@@ -18,34 +18,62 @@ DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 CHAT_ADDRESS = PROJ_ADDRESS + "/chat_record/"
 
 
+def get_db_connection():
+    '''connect db'''
+    conn = sqlite3.connect(DB_ADDRESS)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def get_post(device_id):
+    '''get single device'''
+    conn = get_db_connection()
+    single_post = conn.execute('SELECT * FROM devices WHERE Device_ID = ?',
+                               (device_id,)).fetchone()
+    conn.close()
+    if single_post is None:
+        abort(404)
+    return single_post
+
+
 @S2T.route('/thread-chats/<int:chat_id>')
 def run_jobs(chat_id):
     '''multy jobs'''
     with ThreadPoolExecutor(max_workers=10) as executor:
         executor.submit(get_single_chat, chat_id)
-
-        # future = executor.submit(some_long_task1)
-        # print(future.result())
-        # future2 = executor.submit(some_long_task2, 'hello', 123)
-        # print(future2.result())
-
     return 'Jobs were launched in background!'
 
 
-@S2T.route('/chats', methods=['GET'])
+@S2T.route('/chat')
 def all_chats():
-    '''get all chat content'''
-    with sqlite3.connect(DB_ADDRESS) as conn:
-        if request.method == 'GET':
-            cursor = conn.execute("SELECT * FROM chats")
-            chats_list = [
-                dict(Chat_ID=row[0], Doctor_ID=row[1],
-                     Patient_ID=row[2], Chat_Content=row[3], Date=row[4])
-                for row in cursor.fetchall()
-            ]
-            if chats_list is not None:
-                return jsonify(chats_list), 200
-    return None
+    '''get all chats'''
+    if request.method == 'GET':
+        conn = get_db_connection()
+        allchats = conn.execute('SELECT * FROM chats').fetchall()
+        conn.close()
+        return render_template('chat_history.html', allchats=allchats)
+
+# @S2T.route('/chats', methods=['GET'])
+# def all_chats():
+#     '''get all chat content'''
+#     with sqlite3.connect(DB_ADDRESS) as conn:
+#         if request.method == 'GET':
+#             cursor = conn.execute("SELECT * FROM chats")
+#             chats_list = [
+#                 dict(Chat_ID=row[0], Doctor_ID=row[1],
+#                      Patient_ID=row[2], Chat_Content=row[3], Date=row[4])
+#                 for row in cursor.fetchall()
+#             ]
+#             if chats_list is not None:
+#                 return jsonify(chats_list), 200
+#     return None
+
+
+# @S2T.route('/chat/<int:chat_id>', methods=['GET'])
+# def single_chat(chat_id):
+#     '''get single chat'''
+#     content = get_single_chat(chat_id)
+#     return render_template('chat_single.html', content=content)
 
 
 @S2T.route('/chat/<int:chat_id>', methods=['GET'])
@@ -57,7 +85,7 @@ def single_chat(chat_id):
 def get_single_chat(chat_id):
     '''get single chat'''
     print(f"# Task {chat_id} begin.")
-    time.sleep(5)
+    # time.sleep(5)
 
     chat_address = get_chat_address(chat_id)
 

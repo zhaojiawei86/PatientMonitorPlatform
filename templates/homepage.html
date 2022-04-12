@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="../static/style.css" />
-    <title>Patient Monitor Platform</title>
-  </head>
-  <body>
-    <h1>Welcome to Patient Monitor Platform</h1>
-    <div>
-      <a href="devices.html"><h2>Devices</h2></a>
-      <a href="chats.html"><h2>Chats</h2></a>
-    </div>
-  </body>
-</html>
+{% extends 'base.html' %} {% block content %}
+<h1 style="color: brown">
+  {% block title %} Patient Monitor Platform {% endblock %}
+</h1>
+<hr />
+
+{% endblock %}

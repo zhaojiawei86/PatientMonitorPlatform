@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1 style="color: brown">
+  {% block title %} Device {{ device['Device_ID'] }}: {{ device['Device_Name']
+  }}{% endblock %}
+</h1>
+<hr />
+<h2>{{ device['Device_Name'] }}</h2>
+<p>Introduction to {{ device['Device_Name'] }}</p>
+{% endblock %}

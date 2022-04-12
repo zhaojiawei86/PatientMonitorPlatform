@@ -2,7 +2,10 @@
 from flask import Blueprint, render_template
 
 
-home = Blueprint("example_blueprint", __name__)
+home = Blueprint("home", __name__)
+
+PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
+DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 
 
 @home.route('/')

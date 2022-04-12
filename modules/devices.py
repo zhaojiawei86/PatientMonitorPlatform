@@ -3,127 +3,165 @@ device module:
 manage medical device;
 assign device and get measure result
 '''
-
 import sqlite3
-from flask import request, jsonify, Blueprint
-
+from flask import request, Blueprint, render_template, url_for, flash, redirect
+from werkzeug.exceptions import abort
 from modules import DB_ADDRESS
 
-devices = Blueprint("devices", __name__)
-# devices = Flask(__name__)
-
-# app = Flask(__name__)
 PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
 DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 
+devices = Blueprint("devices", __name__)
 
-@devices.route('/devices', methods=['GET', 'POST'])
+
+def get_db_connection():
+    '''connect db'''
+    conn = sqlite3.connect(DB_ADDRESS)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+@devices.route('/device')
 def all_devices():
-    '''get / post device'''
-    with sqlite3.connect(DB_ADDRESS) as conn:
-        if request.method == 'GET':
-            cursor = conn.execute("SELECT * FROM devices")
-            devices_list = [
-                dict(Device_ID=row[0], Device_Name=row[1])
-                for row in cursor.fetchall()
-            ]
-            if devices_list is not None:
-                return jsonify(devices_list)
+    '''get all devices'''
+    if request.method == 'GET':
+        conn = get_db_connection()
+        devices_data = conn.execute('SELECT * FROM devices').fetchall()
+        conn.close()
+        return render_template('devices.html', devices_data=devices_data)
 
-        if request.method == 'POST':
-            new_device = request.form['Device_Name']
-            sql = """INSERT INTO devices (Device_Name) VALUES (?)"""
-            cursor = conn.execute(sql, (new_device,))
+
+@devices.route('/device/new', methods=['GET', 'POST'])
+def new_device():
+    '''post new deivce'''
+    if request.method == 'POST':
+        title = request.form['title']
+
+        if not title:
+            flash('Device name is required!')
+        else:
+            conn = get_db_connection()
+            conn.execute('INSERT INTO devices (Device_Name) VALUES (?)',
+                         (title,))
             conn.commit()
-            return f"Device with the id {cursor.lastrowid} created successfully.", 201
-    return None
+            conn.close()
+            return redirect(url_for('devices.all_devices'))
+    return render_template('device_post.html')
 
 
-@devices.route('/device/<int:device_id>', methods=['GET', 'PUT', 'DELETE'])
+# @devices.route('/devices', methods=['GET', 'POST'])
+# def all_devices():
+#     '''get / post device'''
+#     with sqlite3.connect(DB_ADDRESS) as conn:
+#         if request.method == 'GET':
+#             cursor = conn.execute("SELECT * FROM devices")
+#             devices_list = [
+#                 dict(Device_ID=row[0], Device_Name=row[1])
+#                 for row in cursor.fetchall()
+#             ]
+#             if devices_list is not None:
+#                 return jsonify(devices_list)
+
+#         if request.method == 'POST':
+#             new_device = request.form['Device_Name']
+#             sql = """INSERT INTO devices (Device_Name) VALUES (?)"""
+#             cursor = conn.execute(sql, (new_device,))
+#             conn.commit()
+#             return f"Device with the id {cursor.lastrowid} created successfully.", 201
+
+#     return None
+
+
+def get_post(device_id):
+    '''get single device'''
+    conn = get_db_connection()
+    single_post = conn.execute('SELECT * FROM devices WHERE Device_ID = ?',
+                               (device_id,)).fetchone()
+    conn.close()
+    if single_post is None:
+        abort(404)
+    return single_post
+
+
+@devices.route('/device/<int:device_id>')
 def single_device(device_id):
-    '''get/ change/ delete device'''
-    with sqlite3.connect(DB_ADDRESS) as conn:
-        cursor = conn.cursor()
-        device = None
-        if request.method == 'GET':
-            cursor.execute(
-                "SELECT * FROM devices WHERE Device_ID=?", (device_id,))
-            rows = cursor.fetchall()
-            for row in rows:
-                device = row
-            if device is not None:
-                return jsonify(device), 200
-            return f"Cannot find device {device_id}", 404
+    '''get single device'''
+    if request.method == 'GET':
+        device = get_post(device_id)
+        return render_template('device_single.html', device=device)
 
-        if request.method == 'PUT':
-            sql = """UPDATE devices
-                    SET Device_Name=?
-                    WHERE Device_ID=?"""
-            device_name = request.form['Device_Name']
-            updated_device = {
-                'Device_ID': device_id,
-                'Device_Name': device_name
-            }
-            conn.execute(sql, (device_name, device_id,))
+
+@devices.route('/device/<int:device_id>/edit', methods=('GET', 'POST'))
+def edit_device(device_id):
+    '''edit device'''
+    edit_name = get_post(device_id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+
+        if not title:
+            flash('Device name is required!')
+        else:
+            conn = get_db_connection()
+            conn.execute('UPDATE devices SET Device_Name = ?'
+                         ' WHERE Device_ID = ?',
+                         (title, device_id,))
             conn.commit()
-            return jsonify(updated_device), 200
+            conn.close()
+            return redirect(url_for('devices.all_devices'))
 
-        if request.method == 'DELETE':
-            if device_id in range(1, 7):
-                return "This device cannot be removed.", 200
-
-            sql = """ DELETE FROM devices WHERE Device_ID=?"""
-            conn.execute(sql, (device_id,))
-            conn.commit()
-            return f"The device with id {device_id} has been deleted.", 200
-    return None
+    return render_template('device_edit.html', edit_name=edit_name)
 
 
-@devices.route('/appointments', methods=['GET'])
-def appointments():
-    '''get appointments'''
-    with sqlite3.connect(DB_ADDRESS) as conn:
-        if request.method == 'GET':
-            cursor = conn.execute("SELECT * FROM appointments")
-            appointments_list = [
-                dict(Appointment_ID=row[0], Doctor_ID=row[1], Patient_ID=row[2],
-                     Device_ID=row[3], Device_Output=row[4], Date=row[5], Alert=row[6])
-                for row in cursor.fetchall()
-            ]
-            if appointments_list is not None:
-                return jsonify(appointments_list)
-    return None
+@devices.route('/device/<int:device_id>/delete', methods=('POST',))
+def delete_device(device_id):
+    '''delete device'''
+    del_device = get_post(device_id)
+    conn = get_db_connection()
+    conn.execute('DELETE FROM devices WHERE Device_ID = ?', (device_id,))
+    conn.commit()
+    conn.close()
+    flash(f"{del_device['Device_ID']} was successfully deleted!")
+    return redirect(url_for('devices.all_devices'))
 
+# @devices.route('/device/<int:device_id>', methods=['GET', 'PUT', 'DELETE'])
+# def single_device(device_id):
+    # '''get/ change/ delete device'''
+    # with sqlite3.connect(DB_ADDRESS) as conn:
+    #     cursor = conn.cursor()
+    #     device = None
+    #     if request.method == 'GET':
+    #         cursor.execute(
+    #             "SELECT * FROM devices WHERE Device_ID=?", (device_id,))
+    #         rows = cursor.fetchall()
+    #         for row in rows:
+    #             device = row
+    #         if device is not None:
+    #             return jsonify(device), 200
+    #         return f"Cannot find device {device_id}", 404
 
-@devices.route('/appointment/<int:apt_id>', methods=['GET', 'PUT'])
-def single_apt(apt_id):
-    '''get/ change/ delete device'''
-    with sqlite3.connect(DB_ADDRESS) as conn:
-        cursor = conn.cursor()
-        apt = None
-        if request.method == 'GET':
-            cursor.execute(
-                "SELECT * FROM appointments WHERE Appointment_ID=?", (apt_id,))
-            rows = cursor.fetchall()
-            for row in rows:
-                apt = row
-            if apt is not None:
-                return jsonify(apt), 200
-            return f"Cannot find appointment {apt_id}", 404
+    #     if request.method == 'PUT':
+    #         sql = """UPDATE devices
+    #                 SET Device_Name=?
+    #                 WHERE Device_ID=?"""
+    #         device_name = request.form['Device_Name']
+    #         updated_device = {
+    #             'Device_ID': device_id,
+    #             'Device_Name': device_name
+    #         }
+    #         conn.execute(sql, (device_name, device_id,))
+    #         conn.commit()
+    #         return jsonify(updated_device), 200
 
-        if request.method == 'PUT':
-            sql = """UPDATE appointments
-                    SET Device_ID=?
-                    WHERE Appointment_ID=?"""
-            device_id = request.form['Device_ID']
-            updated_apt = {
-                'Appointment_ID': apt_id,
-                'Device_ID': device_id
-            }
-            conn.execute(sql, (device_id, apt_id,))
-            conn.commit()
-            return jsonify(updated_apt)
-    return None
+    #     if request.method == 'DELETE':
+    #         if device_id in range(1, 7):
+    #             return "This device cannot be removed.", 200
+
+    #         sql = """ DELETE FROM devices WHERE Device_ID=?"""
+    #         conn.execute(sql, (device_id,))
+    #         conn.commit()
+    #         return f"The device with id {device_id} has been deleted.", 200
+    # return None
 
 
 # if __name__ == "__main__":

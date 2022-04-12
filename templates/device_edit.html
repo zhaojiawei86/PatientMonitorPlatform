@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="color: brown;">{% block title %} Edit Device {{ edit_name['Device_ID'] }}: {{ edit_name['Device_Name'] }} {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="title">Device Name</label>
+        <input type="text" name="title" placeholder="Enter Device Name"
+               class="form-control"
+               value="{{ request.form['title'] or edit_name['title'] }}">
+        </input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+{% endblock %}

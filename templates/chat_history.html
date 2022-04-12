@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+<h1 style="color: brown">{% block title %} Chat History {% endblock %}</h1>
+<hr />
+
+{% for allchat in allchats %}
+<br />
+<div>
+  <h3>Chat {{ allchat['Chat_ID'] }} &nbsp;&nbsp;</h3>
+  <span class="badge badge-primary">{{ allchat['Date'] }}</span>
+  <br /><br />
+  <p>
+    Doctor ID: {{ allchat['Doctor_ID'] }} <br />
+    Patient ID: {{ allchat['Patient_ID']}} <br />
+    <a href="{{ url_for('chats.single_chat', chat_id=allchat['Chat_ID']) }}">
+      <span class="badge badge-warning">Check Chat Content</span>
+    </a>
+  </p>
+</div>
+<hr />
+
+{% endfor %} {% endblock %}

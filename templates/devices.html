@@ -1,14 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="../static/style.css" />
-    <title>Devices</title>
-  </head>
-  <body>
-    <h1>Devices</h1>
-    <p><a href="homepage.html">Back to home page</a></p>
-  </body>
-</html>
+{% extends 'base.html' %} {% block content %}
+<h1 style="color: brown">{% block title %} Devices {% endblock %}</h1>
+<hr />
+<div class="form-group" style="float: right">
+  <a href="{{ url_for('devices.new_device') }}"
+    ><button type="submit" class="btn btn-primary">+ ADD</button></a
+  >
+</div>
+
+{% for device_data in devices_data %}
+<div>
+  <a
+    href="{{ url_for('devices.single_device', device_id=device_data['Device_ID']) }}"
+  >
+    <p>
+      Device {{ device_data['Device_ID'] }}: {{ device_data['Device_Name'] }}
+      &nbsp;&nbsp;
+    </p>
+  </a>
+</div>
+<div style="float: left; width: 5%">
+  <a
+    href="{{ url_for('devices.edit_device', device_id=device_data['Device_ID']) }}"
+  >
+    <input type="submit" value="Edit" class="btn btn-danger btn-sm" />
+  </a>
+</div>
+
+<form
+  action="{{ url_for('devices.delete_device', device_id=device_data['Device_ID']) }}"
+  method="POST"
+>
+  <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+</form>
+
+<br />
+{% endfor %} {% endblock %}

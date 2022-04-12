@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block content %}
+<h1 style="color: brown">{% block title %} Appointments {% endblock %}</h1>
+<hr />
+<!-- <div class="form-group" style="float: right">
+  <a href="{{ url_for('devices.new_device') }}"
+    ><button type="submit" class="btn btn-primary">+ ADD</button></a
+  >
+</div> -->
+
+{% for all_apt in all_apts %}
+<br />
+<div>
+  <a href="#">
+    <h3>Appointment {{ all_apt['Appointment_ID'] }} &nbsp;&nbsp;</h3>
+  </a>
+  <span class="badge badge-primary">{{ all_apt['Date'] }}</span>
+  <br /><br />
+  <p>
+    Doctor ID: {{ all_apt['Doctor_ID'] }} <br />
+    Patient ID: {{ all_apt['Patient_ID']}} <br />
+    Device ID: {{ all_apt['Device_ID']}} <br />
+    Measurement Result: {{ all_apt['Device_Output']}} <br />
+    Alert or Not: {{ all_apt['Alert']}}
+  </p>
+</div>
+<hr />
+
+{% endfor %} {% endblock %}
