@@ -37,6 +37,35 @@ Platform to monitor patients, which could enable people to check medical measure
 
 ![chat](https://user-images.githubusercontent.com/59852184/162889190-cae8610f-0b59-4e07-a6c4-9c85d9f7449d.gif)
 
+### Queue & multi ptocessing (Thread)
+
+Single chat detail could be asked for in threads, which help users GET at the same time.
+We GET single chat for the following order:
+
+```
+chat 1
+chat 2
+chat 1
+chat 1
+```
+
+And we get the thread information in background:
+
+```
+# Task 1 begin.
+# Task 2 begin.
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:50] "GET /thread-chats/1 HTTP/1.1" 200 -
+# Task 1 begin.
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:52] "GET /thread-chats/2 HTTP/1.1" 200 -
+# Task 1 begin.
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:56] "GET /thread-chats/1 HTTP/1.1" 200 -
+# Task done.
+10.192.41.70 - - [06/Apr/2022 18:05:59] "GET /thread-chats/1 HTTP/1.1" 200 -
+```
+
 ## 3. Appointments
 
 <img width="1002" alt="image" src="https://user-images.githubusercontent.com/59852184/162890230-8b30d969-241e-4698-96fc-b1457da8a252.png">
