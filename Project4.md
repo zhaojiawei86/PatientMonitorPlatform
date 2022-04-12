@@ -43,3 +43,7 @@ Platform to monitor patients, which could enable people to check medical measure
 ### GET
 
 ![apts](https://user-images.githubusercontent.com/59852184/162888992-4c22a6c3-3a9b-4939-b640-000f68a08e5b.gif)
+
+## 4. Users
+
+Still working ...
