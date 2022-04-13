@@ -3,17 +3,19 @@ chats module:
 get chat content
 speech to text
 '''
+import os
 from concurrent.futures import ThreadPoolExecutor
 import sqlite3
 # import time
 import speech_recognition as sr
 from flask import abort, request, jsonify, Blueprint, render_template
-
+from modules import AWS_ADDRESS, PROJ_ADDRESS
 
 S2T = Blueprint("chats", __name__)
 
 # chats = Flask(__name__)
-PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
+if not os.path.exists(PROJ_ADDRESS):
+    PROJ_ADDRESS = AWS_ADDRESS
 DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 CHAT_ADDRESS = PROJ_ADDRESS + "/chat_record/"
 

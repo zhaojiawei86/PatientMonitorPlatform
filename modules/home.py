@@ -1,10 +1,13 @@
 '''home page'''
+import os
 from flask import Blueprint, render_template
-
+from modules import PROJ_ADDRESS, AWS_ADDRESS
 
 home = Blueprint("home", __name__)
 
-PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
+
+if not os.path.exists(PROJ_ADDRESS):
+    PROJ_ADDRESS = AWS_ADDRESS
 DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 
 

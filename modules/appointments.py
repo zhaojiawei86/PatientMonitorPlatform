@@ -3,13 +3,15 @@ appointment module:
 manage medical device;
 assign device and get measure result
 '''
+import os
 import sqlite3
 from flask import request, Blueprint, render_template
 # , url_for, flash, redirect
 from werkzeug.exceptions import abort
-from modules import DB_ADDRESS
+from modules import PROJ_ADDRESS, AWS_ADDRESS
 
-PROJ_ADDRESS = "/Users/jiaweizhao/Desktop/PatientMonitorPlatform"
+if not os.path.exists(PROJ_ADDRESS):
+    PROJ_ADDRESS = AWS_ADDRESS
 DB_ADDRESS = PROJ_ADDRESS + "/database/db.sqlite3"
 
 apts = Blueprint("apts", __name__)
