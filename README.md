@@ -24,6 +24,7 @@ Project is created with:
 
 - Python 3.8.9
 - Flask 2.0.3
+- SQLite 3.36.0
 
 # Setup
 
